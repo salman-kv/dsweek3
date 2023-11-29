@@ -1,6 +1,4 @@
 
-import 'dart:ffi';
-
 class MinHeap{
 
 List<int> array=[];
@@ -27,7 +25,7 @@ shiftDown(int current){
   while(leftIdx <= endIdx){
     int rightIdx = rightChild(current);
     int idxToShift;
-    if(rightIdx <= endIdx && array[leftIdx] > array[rightIdx]){
+    if(rightIdx <= endIdx && array[rightIdx] < array[leftIdx]){
       idxToShift=rightIdx;
     }
     else{
@@ -43,6 +41,28 @@ shiftDown(int current){
     }
   }
 }
+
+shiftUp(int current){
+  int parentIdx = parent(current);
+  while(current > 0 &&  array[parentIdx] > array[current] ){
+      swap(current, parentIdx);
+      current=parentIdx;
+      parentIdx=parent(current);
+  }
+}
+
+add(int data){
+  array.add(data);
+  shiftUp(array.length-1);
+}
+
+
+remove(){
+  array[0]=array[array.length-1];
+  array.removeAt(array.length-1);
+  shiftDown(0);
+}
+
 
 display(){
   for(int i=0;i<array.length;i++){
@@ -68,11 +88,13 @@ rightChild(int i){
   return i*2+2;
 }
 
-
 }
 
 void main(List<String> args) {
   List<int> array=[4,7,55,2,8,12,54];
   MinHeap obj = MinHeap.array(array);
+  obj.add(1);
+  obj.add(3);
+  obj.remove();
   obj.display();
 }
